@@ -1,11 +1,4 @@
-const { WebClient } = require('@slack/client');
 const axios = require('axios');
-
-// An access token (from your Slack app or custom integration - xoxp, or xoxb)
-const token = process.env.SLACK_TOKEN;
-
-console.log(token);
-const web = new WebClient(token);
 
 exports.getChannelMessages = getChannelMessages;
 exports.getAllUsers = getAllUsers;
