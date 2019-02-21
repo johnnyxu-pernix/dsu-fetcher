@@ -18,16 +18,17 @@ app.get('/', (req, res) => {
     })
     .then(messages => {
       formatedMessages = slackCtrl.formatMessagesByUser(userList, messages);
-      try {
-        if (drive.addRows(formatedMessages)) {
-          res.setHeader('Content-Type', 'application/json');
-          res.status(200);
-          res.send({ message: 'Goals succesfully added'});
-        }
-      } catch (error) {
-        res.status(500);
-        res.send({ error: error });
-      }
+
+        drive.addRows(formatedMessages)
+          .then(() => {
+            res.setHeader('Content-Type', 'application/json');
+            res.status(200);
+            res.send({ message: 'Goals succesfully added'});
+          })
+          .catch((error) => {
+            res.status(500);
+            res.send({ error: error });
+          });
     })
 });
 
