@@ -17,11 +17,7 @@ function addRows(formatedMessages) {
       doc.addRow(SHEET_NUMBER, { Date: message.timestamp, User: message.user.realName, Goals: message.content },
         function (error, rows) {
           promises.push(new Promise((resolve, reject) => {
-            if (error) {
-              reject(error);
-            } else {
-              resolve(true);
-            }
+            error ? reject(error) : resolve(true);
           }));
         });
     });
