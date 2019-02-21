@@ -5,13 +5,16 @@ var doc = new GoogleSpreadsheet(process.env.GOOGLE_SPREADSHEET_ID);
 
 exports.addRows = addRows;
 
+// The sheet number starts at one
+const SHEET_NUMBER = 1;
+
 function addRows(formatedMessages) {
   let promises = [];
   var creds = require('./resources/client_secret.json');
 
   doc.useServiceAccountAuth(creds, function() {
-    formatedMessages.forEach(function (message, index) {
-      doc.addRow(1, { Date: message.timestamp, User: message.user.realName, Goals: message.content },
+    formatedMessages.forEach(function (message) {
+      doc.addRow(SHEET_NUMBER, { Date: message.timestamp, User: message.user.realName, Goals: message.content },
         function (error, rows) {
           promises.push(new Promise((resolve, reject) => {
             if (error) {
