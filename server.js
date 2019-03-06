@@ -6,7 +6,6 @@ var utils = require("./utils");
 
 const express = require('express')
 const app = express()
-const port = 3000
 
 app.get('/:date?', (req, res) => {
   let userList = [];
@@ -30,11 +29,17 @@ app.get('/:date?', (req, res) => {
           res.send({ message: 'Goals succesfully added' });
         })
         .catch((error) => {
+          console.log('at addRows', error);
           res.status(500);
           res.send({ error: error });
         });
     })
-    .catch(error => res.status(500).json(error));
+    .catch(error => {
+      console.log('add get all Users', error);
+      res.status(500).json(error);
+    });
 });
+
+const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log(`Listening on port ${port}!`))

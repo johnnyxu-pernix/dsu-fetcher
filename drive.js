@@ -16,9 +16,11 @@ function addRows(formatedMessages) {
     private_key: process.env.GOOGLE_APP_PRIVATE_KEY.replace(/\\n/g, '\n')
   };
 
+  const orderedMessages = formatedMessages.sort((a,b)=> a.timestamp > b.timestamp);
+
   doc.useServiceAccountAuth(creds, function() {
-    formatedMessages.forEach(function (message) {
-      doc.addRow(SHEET_NUMBER, { Date: message.timestamp, User: message.user.realName, Goals: message.content },
+    orderedMessages.forEach(function (message) {
+      doc.addRow(SHEET_NUMBER, { Date: message.timestamp, User: message.user ? message.user.realName: 'No User', Goals: message.content },
         function (error, rows) {
           promises.push(new Promise((resolve, reject) => {
             error ? reject(error) : resolve(true);
