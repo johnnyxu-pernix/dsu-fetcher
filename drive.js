@@ -1,5 +1,4 @@
 var GoogleSpreadsheet = require('google-spreadsheet');
-var creds = require('./resources/client_secret.json');
 
 // Create a document object using the ID of the spreadsheet - obtained from its URL.
 var doc = new GoogleSpreadsheet(process.env.GOOGLE_SPREADSHEET_ID);
@@ -11,6 +10,11 @@ const SHEET_NUMBER = 1;
 
 function addRows(formatedMessages) {
   let promises = [];
+
+  var creds = {
+    client_email: process.env.GOOGLE_APP_MAIL,
+    private_key: process.env.GOOGLE_APP_PRIVATE_KEY.replace(/\\n/g, '\n')
+  };
 
   doc.useServiceAccountAuth(creds, function() {
     formatedMessages.forEach(function (message) {
