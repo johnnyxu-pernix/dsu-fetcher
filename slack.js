@@ -5,7 +5,15 @@ exports.getAllUsers = getAllUsers;
 exports.formatMessagesByUser = formatMessagesByUser;
 
 function getChannelMessages() {
-  return axios.get(`https://slack.com/api/channels.history?token=${process.env.SLACK_TOKEN}&channel=${process.env.CHANNEL_ID}&pretty=1`)
+  var currentDate = new Date();
+
+  var date = currentDate.getDate();
+  var month = currentDate.getMonth();
+  var year = currentDate.getFullYear();
+
+  var dateString = new Date((month + 1) + "-" +date + "-" + year);
+  dateString = dateString.getTime()/1000;
+  return axios.get(`https://slack.com/api/channels.history?token=${process.env.SLACK_TOKEN}&channel=${process.env.CHANNEL_ID}&pretty=1&oldest=${dateString}`)
     .then(response => {
       return response.data.messages.map(message => {
         let date = new Date(message.ts * 1000);
