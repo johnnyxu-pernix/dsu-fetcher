@@ -4,8 +4,8 @@ exports.getChannelMessages = getChannelMessages;
 exports.getAllUsers = getAllUsers;
 exports.formatMessagesByUser = formatMessagesByUser;
 
-function getChannelMessages() {
-  return axios.get(`https://slack.com/api/channels.history?token=${process.env.SLACK_TOKEN}&channel=${process.env.CHANNEL_ID}&pretty=1`)
+function getChannelMessages(fromDate, toDate) {
+  return axios.get(`https://slack.com/api/channels.history?token=${process.env.SLACK_TOKEN}&channel=${process.env.CHANNEL_ID}&pretty=1&oldest=${fromDate}&latest=${toDate}`)
     .then(response => {
       return response.data.messages.map(message => {
         let date = new Date(message.ts * 1000);
