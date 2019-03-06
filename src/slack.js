@@ -1,4 +1,5 @@
 const axios = require('axios');
+const moment = require('moment');
 
 exports.getChannelMessages = getChannelMessages;
 exports.getAllUsers = getAllUsers;
@@ -12,6 +13,7 @@ function getChannelMessages(fromDate, toDate) {
         return {
           user: message.user,
           timestamp: `${date.toLocaleDateString()} - ${date.toLocaleTimeString()}`,
+          ts: message.ts,
           content: message.text
         }
       });
@@ -26,6 +28,10 @@ function getAllUsers() {
 }
 
 function formatMessagesByUser(userList, messages) {
+  messages = messages.sort(function (left, right) {
+    return new Date(right.date) - new Date(left.date);
+  });
+
   return messages.map(message => {
     let messageUser = message.user;
     message.user = userList.find(user => user.id === messageUser);

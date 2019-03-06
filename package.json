@@ -4,7 +4,7 @@
   "description": "Slack's Daily Stand Up Goals fetcher",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --exit --timeout 30000",
     "start": "node server.js"
   },
   "author": "",
@@ -15,5 +15,9 @@
     "express": "^4.16.4",
     "google-spreadsheet": "^2.0.7",
     "moment": "^2.24.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.0.2"
   }
 }
