@@ -34,6 +34,7 @@ app.get('/:date?', (req, res) => {
           res.send({ error: error });
         });
     })
+    .catch(error => res.status(500).json(error));
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}!`))
