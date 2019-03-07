@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha --exit --timeout 30000",
-    "start": "node server.js"
+    "start": "node server.js",
+    "lint": "./node_modules/.bin/eslint src"
   },
   "author": "",
   "license": "ISC",
@@ -19,6 +20,9 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "eslint": "^5.15.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0",
     "mocha": "^6.0.2"
   }
 }
