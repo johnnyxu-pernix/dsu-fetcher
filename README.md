@@ -1,4 +1,7 @@
 # DSU Fetcher
+
+[![CircleCI](https://circleci.com/gh/johnnyxu-pernix/dsu-fetcher/tree/develop.svg?style=svg&circle-token=e8ccb69431c5d15d5905e348f5955c42b0bfdc01)](https://circleci.com/gh/johnnyxu-pernix/dsu-fetcher/tree/develop)
+
 NodeJS app with the purpose of fetching messages from Slack from a specific channel and putting them into a Drive Document.
 
 ## Requisites
