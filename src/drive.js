@@ -14,9 +14,7 @@ function addRows(formatedMessages) {
   };
 
   doc.useServiceAccountAuth(creds, async function() {
-    console.log('formatedMessages', formatedMessages);
     for (let i in formatedMessages ) {
-      console.log('i', i);
       let message = formatedMessages[i];
       await addRowsInFile(message);
     }
