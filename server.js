@@ -1,37 +1,37 @@
 require('dotenv').config();
 
-var slackCtrl = require("./src/slack.js");
-var drive = require("./src/drive.js");
-var utils = require("./src/utils");
+const express = require('express');
 
-const express = require('express')
-const app = express()
+const slackCtrl = require('./src/slack.js');
+const drive = require('./src/drive.js');
+const utils = require('./src/utils');
+
+const app = express();
 
 app.get('/:date?', (req, res) => {
-  let userList = [];
-  let formatedMessages = [];
-  const dateReceived = req.params.date
-  let dateFrom, dateTo;
-  ({ dateFrom, dateTo } = utils.getFromAndToDates(dateFrom, dateTo, dateReceived));
+  const dateReceived = req.params.date;
 
+  const { dateFrom, dateTo } = utils.getFromAndToDates(dateReceived);
+  let userList;
   slackCtrl.getAllUsers()
-    .then(currentUserList => {
+    .then((currentUserList) => {
       userList = currentUserList;
       return slackCtrl.getChannelMessages(dateFrom, dateTo);
     })
-    .then(messages => {
-      formatedMessages = slackCtrl.formatMessagesByUser(userList, messages);
+    .then((messages) => {
+      const formatedMessages = slackCtrl.formatMessagesByUser(userList, messages);
 
-      drive.addRows(formatedMessages)
+      drive.addRows(formatedMessages);
       res.setHeader('Content-Type', 'application/json');
       res.status(200);
       res.send({ message: 'Goals succesfully added' });
     })
-    .catch(error => {
+    .catch((error) => {
       res.status(500).json(error);
     });
 });
 
 const port = process.env.PORT || 5000;
 
-app.listen(port, () => console.log(`Listening on port ${port}!`))
+// eslint-disable-next-line no-console
+app.listen(port, () => console.log(`Listening on port ${port}!`));
