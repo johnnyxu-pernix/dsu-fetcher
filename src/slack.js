@@ -1,8 +1,10 @@
 const axios = require('axios');
+const moment = require('moment-timezone');
 
 exports.getChannelMessages = getChannelMessages;
 exports.getAllUsers = getAllUsers;
 exports.formatMessagesByUser = formatMessagesByUser;
+exports.sortMessagesByDate = sortMessagesByDate;
 
 function getChannelMessages(fromDate, toDate) {
   return axios.get(`https://slack.com/api/channels.history?token=${process.env.SLACK_TOKEN}&channel=${process.env.CHANNEL_ID}&pretty=1&oldest=${fromDate}&latest=${toDate}`)
@@ -12,6 +14,7 @@ function getChannelMessages(fromDate, toDate) {
         return {
           user: message.user,
           timestamp: `${date.toLocaleDateString()} - ${date.toLocaleTimeString()}`,
+          ts: message.ts,
           content: message.text
         }
       });
@@ -26,6 +29,8 @@ function getAllUsers() {
 }
 
 function formatMessagesByUser(userList, messages) {
+  messages = sortMessagesByDate(messages);
+
   return messages.map(message => {
     let messageUser = message.user;
     message.user = userList.find(user => user.id === messageUser);
@@ -33,3 +38,13 @@ function formatMessagesByUser(userList, messages) {
   });
 }
 
+function sortMessagesByDate(messages) {
+  return messages.sort(function(message1, message2) {
+    message1 = moment.unix(message1.ts).tz('America/Costa_Rica').toDate();
+    message2 = moment.unix(message2.ts).tz('America/Costa_Rica').toDate();
+
+    if (message1 > message2) return 1;
+    if (message1 < message2) return -1;
+    return 0;
+  });
+}

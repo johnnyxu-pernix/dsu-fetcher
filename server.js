@@ -1,8 +1,8 @@
 require('dotenv').config();
 
-var slackCtrl = require("./slack.js");
-var drive = require("./drive.js");
-var utils = require("./utils");
+var slackCtrl = require("./src/slack.js");
+var drive = require("./src/drive.js");
+var utils = require("./src/utils");
 
 const express = require('express')
 const app = express()
@@ -23,19 +23,11 @@ app.get('/:date?', (req, res) => {
       formatedMessages = slackCtrl.formatMessagesByUser(userList, messages);
 
       drive.addRows(formatedMessages)
-        .then(() => {
-          res.setHeader('Content-Type', 'application/json');
-          res.status(200);
-          res.send({ message: 'Goals succesfully added' });
-        })
-        .catch((error) => {
-          console.log('at addRows', error);
-          res.status(500);
-          res.send({ error: error });
-        });
+      res.setHeader('Content-Type', 'application/json');
+      res.status(200);
+      res.send({ message: 'Goals succesfully added' });
     })
     .catch(error => {
-      console.log('add get all Users', error);
       res.status(500).json(error);
     });
 });
